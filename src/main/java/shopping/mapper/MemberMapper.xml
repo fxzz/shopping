@@ -4,7 +4,8 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shopping.mapper.MemberMapper">
 	<select id="memberAutoNum" resultType="String">
-    	select concat('mem' , nvl(max(substr(member_num,4)),100000) + 1) from members
+    	select concat('mem' , nvl(max(substr(member_num,4)),100000) + 1) 
+    	  from members
 	</select>
 
 
