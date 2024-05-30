@@ -7,9 +7,9 @@
 <script type="text/javascript">
 // checkbox
 $(function() {
-	$("#frm").submit(function() {
-		if ($("input:checkbox[name=memDel]:checked").length < 1) {
-			alert("하나이상 선택하세요.")
+	$("#frm").submit(function(){
+		if($("input:checkbox[name=memDels]:checked").length < 1 ){
+			alert("하나이상 선택하세요.");
 			return false;
 		}
 	});
@@ -62,8 +62,8 @@ $(function() {
 		</td>
 	</tr>
 	<tr th:each="dto : ${dtos}">
-		<td>[[${dto.memberNum}]]</td>
-		<td>[[${dto.memberName}]]</td>
+		<td><a th:href="'memberDetail?memberNum=' + ${dto.memberNum}">[[${dto.memberNum}]]</a></td>
+		<td><a th:href="@{memberDetail(memberNum=${dto.memberNum})}">[[${dto.memberName}]]</a></td>
 		<td>[[${dto.memberId}]]</td>
 		<td>[[${#dates.format(dto.memberRegistDate, "yyyy-MM-dd")}]]</td>
 		<td><input type="checkbox" name="memDels" th:value="${dto.memberNum}"/></td>
