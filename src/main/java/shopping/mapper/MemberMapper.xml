@@ -3,6 +3,35 @@
 	"-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shopping.mapper.MemberMapper">
+	
+	<select id="selectAll" resultType="mem" >
+		select member_num          as memberNum
+			, member_id            as memberId
+			, member_pw            as memberPw
+			, member_name          as memberName
+			, member_addr          as memberAddr
+			, member_addr_detail   as memberAddrDetail
+			, member_post          as memberPost
+			, member_phone1        as memberPhone1
+			, member_phone2        as memberPhone2
+			, member_regist        as memberRegistDate
+			, member_birth         as memberBirth
+			, gender               as gender
+			, member_email         as memberEmail
+			, member_email_conf    as memberEmailConf
+			, point                as point
+		 from members
+		<where>
+			<if test="searchWord != null">
+				member_name like '%' || ${searchWord} || '%'
+			   or member_id like '%' || ${searchWord} || '%'
+			  or member_num like '%' || ${searchWord} || '%'
+			</if>
+		</where>	
+	</select>
+	
+	
+	
 	<select id="memberAutoNum" resultType="String">
     	select concat('mem' , nvl(max(substr(member_num,4)),100000) + 1) 
     	  from members
