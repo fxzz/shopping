@@ -31,8 +31,10 @@ public class MemberController {
 	MemberListService memberListService;
 	
 	@GetMapping("memberList")
-	public String list(@RequestParam(required = false, value = "searchWord") String searchWord, Model model) {
-		memberListService.execute(searchWord, model);
+	public String list(@RequestParam(required = false, value = "searchWord") String searchWord,
+					   @RequestParam(required = false, value = "page", defaultValue = "1") int page,
+					   Model model) {
+		memberListService.execute(searchWord, model, page);
 		return "thymeleaf/member/memberList";
 	}
 	

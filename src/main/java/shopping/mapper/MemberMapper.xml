@@ -3,9 +3,20 @@
 	"-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shopping.mapper.MemberMapper">
-	
-	<select id="selectAll" resultType="mem" >
-		select member_num          as memberNum
+
+	<select id="memberCount" parameterType="String" resultType="integer">
+		select count(*) from members
+			<where>
+				<if test="searchWord != null">
+					MEMBER_NAME like '%' || #{searchWord} || '%'
+			  	 or member_id like '%' || #{searchWord} || '%'
+			  	 or member_num like '%' || #{searchWord} || '%'
+				</if>
+			</where>
+	</select>
+
+	<sql id="memberColumnsBase">
+			 member_num          as memberNum
 			, member_id            as memberId
 			, member_pw            as memberPw
 			, member_name          as memberName
@@ -20,14 +31,22 @@
 			, member_email         as memberEmail
 			, member_email_conf    as memberEmailConf
 			, point                as point
-		 from members
-		<where>
-			<if test="searchWord != null">
-				member_name like '%' || ${searchWord} || '%'
-			   or member_id like '%' || ${searchWord} || '%'
-			  or member_num like '%' || ${searchWord} || '%'
-			</if>
-		</where>	
+	</sql>
+	
+	<select id="selectAll" resultType="mem" parameterType="startEndPageDTO">
+	select * from 
+			(select ROW_NUMBER() over (order by member_num) as rn,
+					<include refid="memberColumnsBase" />
+			from members
+			<where>
+				<if test="searchWord != null">
+					MEMBER_NAME like '%' || #{searchWord} || '%'
+			  	 or member_id like '%' || #{searchWord} || '%'
+			  	 or member_num like '%' || #{searchWord} || '%'
+				</if>
+			</where>
+			)sub1
+	where rn between #{startRow}  and #{endRow}
 	</select>
 	
 	

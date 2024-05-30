@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import shopping.domain.MemberDTO;
+import shopping.domain.StartEndPageDTO;
 import shopping.mapper.MemberMapper;
+import shopping.service.StartEndPageService;
 
 @Service
 public class MemberListService {
@@ -16,10 +18,22 @@ public class MemberListService {
 	@Autowired
 	MemberMapper memberMapper;
 	
-	public void execute(String searchWord, Model model) {
-		List<MemberDTO> list = memberMapper.selectAll(searchWord);
-		model.addAttribute("dtos", list);
+	@Autowired
+	StartEndPageService startEndPageService;
+	
+	String searchWord;
+	
+	public void execute(String searchWord, Model model, int page) {
 		
-		model.addAttribute("searchWord", searchWord);
+		if (searchWord != null) {
+			this.searchWord = searchWord.trim();
+		}
+		
+		StartEndPageDTO sepDTO = startEndPageService.execute(page, this.searchWord);
+		List<MemberDTO> list = memberMapper.selectAll(sepDTO);
+		int count = memberMapper.memberCount(this.searchWord);
+		startEndPageService.execute(page, count, model, list, this.searchWord);
+		
+		
 	}
 }
