@@ -3,6 +3,29 @@
 	"-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shopping.mapper.UserMapper">
+
+
+
+
+	<select id="loginSelect" parameterType="String" resultType="authInfo">
+		select member_id          as userId
+			 , member_pw          as userPw
+			 , member_name        as userName
+			 , 'mem'              as grade
+			 , member_email       as userEmail
+			 , member_email_conf  as userEmailCheck
+		 from members
+		where member_id = #{userId}
+		union 
+		select emp_id             as userId
+		     , emp_pw             as userPw
+		     , emp_name           as userName
+		     ,'emp'               as grade
+		     , emp_email          as userEmail
+		     , 'T'                as userEmailCheck
+		from employees
+		where emp_id = #{userId}
+	</select>
 	
 	<update id="userCheckUpdate" parameterType="String">
 		update members
