@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 	
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopping.mapper.MemberMyMapper">
+
+	<sql id="memberColumnsBase">
+			 member_num          as memberNum
+			, member_id            as memberId
+			, member_pw            as memberPw
+			, member_name          as memberName
+			, member_addr          as memberAddr
+			, member_addr_detail   as memberAddrDetail
+			, member_post          as memberPost
+			, member_phone1        as memberPhone1
+			, member_phone2        as memberPhone2
+			, member_regist        as memberRegistDate
+			, member_birth         as memberBirth
+			, gender               as gender
+			, member_email         as memberEmail
+			, member_email_conf    as memberEmailConf
+			, point                as point
+	</sql>
+
+	<select id="memberInfo" resultType="mem">
+		select <include refid="memberColumnsBase" />
+		  from members
+		 where member_id = #{memberId}
+	</select>
+</mapper>
