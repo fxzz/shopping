@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 	
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopping.mapper.UserMapper">
+
+
+
+
+	<select id="loginSelect" parameterType="String" resultType="authInfo">
+		select member_id          as userId
+			 , member_pw          as userPw
+			 , member_name        as userName
+			 , 'mem'              as grade
+			 , member_email       as userEmail
+			 , member_email_conf  as userEmailCheck
+		 from members
+		where member_id = #{userId}
+		union 
+		select emp_id             as userId
+		     , emp_pw             as userPw
+		     , emp_name           as userName
+		     ,'emp'               as grade
+		     , emp_email          as userEmail
+		     , 'T'                as userEmailCheck
+		from employees
+		where emp_id = #{userId}
+	</select>
+	
+	<update id="userCheckUpdate" parameterType="String">
+		update members
+		   set member_email_conf = 'T' 
+		 where member_email_conf is null 
+		   and  member_email = #{email}
+	</update>
+	
+	<insert id="userInsert" parameterType="mem">
+	insert into members(
+		member_num
+		, member_id
+		, member_pw
+		, member_name
+		, member_addr
+		, member_addr_detail
+		, member_post
+		, member_phone1
+		, member_phone2
+		, member_regist
+		, member_birth
+		, gender
+		, member_email
+		, member_email_conf
+		, point
+	 ) values(
+		(select concat('mem' , nvl(max(substr(member_num,4)),100000) + 1) from members)
+		, #{memberId}
+		, #{memberPw}
+		, #{memberName}
+		, #{memberAddr}
+		, #{memberAddrDetail}
+		, #{memberPost}
+		, #{memberPhone1}
+		, #{memberPhone2}
+		, SYSDATE
+		, #{memberBirth}
+		, #{gender}
+		, #{memberEmail}
+		, null
+		, 0
+	)
+	</insert>
+	
+</mapper>

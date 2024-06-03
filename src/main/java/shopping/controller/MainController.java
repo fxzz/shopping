@@ -1,13 +1,17 @@
 package shopping.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import shopping.command.LoginCommand;
 
 @Controller
 public class MainController {
 
-	@RequestMapping("/")
-	public String index() {
+	@GetMapping("/")
+	public String index(Model model) {
+		model.addAttribute("loginCommand", new LoginCommand());
 		return "thymeleaf/index";
 	}
 }
