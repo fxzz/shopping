@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import shopping.service.memberMyPage.MemberDropService;
 import shopping.service.memberMyPage.MemberInfoService;
 import shopping.service.memberMyPage.MemberPwModifyService;
 import shopping.service.memberMyPage.MyPassConfirmService;
@@ -26,6 +27,9 @@ public class MemberMyPageController {
 	
 	@Autowired
 	MyPassConfirmService myPassConfirmService;
+	
+	@Autowired
+	MemberDropService memberDropService;
 	
 	@GetMapping("myDetail")
 	public String myDetail(HttpSession session, Model model) {
@@ -50,5 +54,21 @@ public class MemberMyPageController {
 								@RequestParam(value =  "newPw") String newPw,
 								HttpSession session) {
 		return myPassConfirmService.execute(newPw, oldPw, session);
+	}
+	
+	@GetMapping("memberDrop")
+	public String memberDrop() {
+		return "thymeleaf/memberShip/memberDrop";
+	}
+	
+	@PostMapping("memberDropOk")
+	public String memberDrop(@RequestParam("memberPw") String memberPw, Model model, HttpSession session) {
+		int i = memberDropService.execute(memberPw, session, model);
+		if (i == 1) {
+			return "redirect:/login/logout";
+		} else {
+			return "thymeleaf/memberShip/memberDrop";
+		}
+		
 	}
 }

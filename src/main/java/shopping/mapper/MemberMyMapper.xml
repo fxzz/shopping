@@ -35,4 +35,9 @@
 		 where member_id = #{arg1}
 	</update>
 	
+	<delete id="memberDrop">
+		delete from members
+		 where member_id = #{memberId}
+	</delete>
+	
 </mapper>

@@ -8,4 +8,5 @@ import shopping.domain.MemberDTO;
 public interface MemberMyMapper {
 	public MemberDTO memberInfo(String memberId);
 	public int memberPwUpdate(String userPw, String memberId);
+	public int memberDrop(String memberId);
 }
