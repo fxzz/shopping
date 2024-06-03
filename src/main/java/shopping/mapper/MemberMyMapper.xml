@@ -40,4 +40,35 @@
 		 where member_id = #{memberId}
 	</delete>
 	
+	<update id="memberInfoUpdate" parameterType="mem">
+		update members
+		<trim prefix="set"  suffixOverrides=",">
+			member_Name = #{memberName}, 
+			member_ADDR = #{memberAddr},
+			<choose>
+				<when test="memberAddrDetail != null">
+					member_Addr_Detail = #{memberAddrDetail},
+				</when>
+				<otherwise>
+				member_Addr_Detail = null,
+				</otherwise>
+			</choose>
+			member_Post = #{memberPost},
+			gender = #{gender},
+			member_Phone1 = #{memberPhone1},
+			<choose>
+				<when test="memberPhone2 != null">
+					member_Phone2 =#{memberPhone2},
+				</when>
+				<when test="memberPhone2 == null">
+					member_Phone2 = null,
+				</when>	
+			</choose>
+			member_Email =#{memberEmail},
+			member_Birth = #{memberBirth},
+		</trim>
+		<where>		
+		member_id = #{memberId}
+		</where>
+</update>
 </mapper>

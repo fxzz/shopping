@@ -3,6 +3,7 @@ package shopping.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import shopping.command.MemberCommand;
 import shopping.service.memberMyPage.MemberDropService;
 import shopping.service.memberMyPage.MemberInfoService;
+import shopping.service.memberMyPage.MemberInfoUpdateService;
 import shopping.service.memberMyPage.MemberPwModifyService;
 import shopping.service.memberMyPage.MyPassConfirmService;
 
@@ -30,6 +34,9 @@ public class MemberMyPageController {
 	
 	@Autowired
 	MemberDropService memberDropService;
+	
+	@Autowired
+	MemberInfoUpdateService memberInfoUpdateService;
 	
 	@GetMapping("myDetail")
 	public String myDetail(HttpSession session, Model model) {
@@ -69,6 +76,21 @@ public class MemberMyPageController {
 		} else {
 			return "thymeleaf/memberShip/memberDrop";
 		}
+	}
+	
+	@GetMapping("memberUpdate")
+	public String memberUpdate(HttpSession session, Model model) {
+		memberInfoService.execute(session, model);
+		return "thymeleaf/memberShip/myModify";
+	}
+	
+	@PostMapping("memberUpdate")
+	public String memberUpdate(@Valid MemberCommand memberCommand, BindingResult result, HttpSession session) {
+		memberInfoUpdateService.execute(memberCommand, session, result);
 		
+		if (result.hasErrors()) {
+			return "thymeleaf/memberShip/myModify";
+		}
+		return "redirect:myDetail";
 	}
 }
