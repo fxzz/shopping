@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import shopping.command.EmployeeCommand;
@@ -28,8 +29,11 @@ public class EmployeeController {
 	EmployeeListService employeeListService;
 	
 	@GetMapping("employeeList")
-	public String empList(Model model) {
-		employeeListService.execute(model);
+	public String empList(
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "searchWord", required = false) String searchWord,
+			Model model) {
+		employeeListService.execute(page, searchWord, model);
 		return "thymeleaf/employee/employeeList";
 	}
 	

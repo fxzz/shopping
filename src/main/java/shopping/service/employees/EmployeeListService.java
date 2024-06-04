@@ -7,15 +7,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import shopping.domain.EmployeeDTO;
+import shopping.domain.StartEndPageDTO;
 import shopping.mapper.EmployeeMapper;
+import shopping.service.StartEndPageService;
 
 @Service
 public class EmployeeListService {
 	
 	@Autowired
 	EmployeeMapper employeeMapper;
-	public void execute(Model model) {
-		List<EmployeeDTO> list = employeeMapper.employeeAllSelect();
+	
+	@Autowired
+	StartEndPageService startEndPageService;
+	
+	String searchWord;
+	public void execute(int page, String searchWord, Model model) {
+		
+		if(searchWord != null) {
+			this.searchWord = searchWord.trim();
+		}
+		
+		StartEndPageDTO sepDTO = startEndPageService.execute(page, this.searchWord);
+		List<EmployeeDTO> list = employeeMapper.employeeAllSelect(sepDTO);
+		
+		int count = employeeMapper.employeeCount(this.searchWord);
+		startEndPageService.execute(page, count, model, list, this.searchWord);
 		model.addAttribute("list", list);
 	}
 }
