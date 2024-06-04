@@ -14,6 +14,7 @@ import shopping.command.EmployeeCommand;
 import shopping.service.employees.EmployeeAutoNumService;
 import shopping.service.employees.EmployeeInsertService;
 import shopping.service.employees.EmployeeListService;
+import shopping.service.employees.EmployeesDeleteService;
 
 @Controller
 @RequestMapping("employee")
@@ -27,6 +28,9 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeListService employeeListService;
+	
+	@Autowired
+	EmployeesDeleteService employeesDeleteService;
 	
 	@GetMapping("employeeList")
 	public String empList(
@@ -56,6 +60,12 @@ public class EmployeeController {
 		}
 		
 		employeeInsertService.execute(employeeCommand);
+		return "redirect:employeeList";
+	}
+	
+	@PostMapping("empsDelete")
+	public String empsDelete(@RequestParam(value = "empDels") String empsDel[]) {
+		employeesDeleteService.execute(empsDel);
 		return "redirect:employeeList";
 	}
 

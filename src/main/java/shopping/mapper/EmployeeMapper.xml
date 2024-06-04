@@ -63,5 +63,13 @@ where rn between #{startRow}  and #{endRow}
 		</where>
 	</if>
 </select>
+
+<delete id="employeesDelete" parameterType="String">
+delete from employees where EMP_NUM in
+<foreach collection="employeesNum" item="employeeNum" close=")" open="(" separator=","
+	index="index">
+	#{employeeNum}
+</foreach>
+</delete>
 	
 </mapper>
