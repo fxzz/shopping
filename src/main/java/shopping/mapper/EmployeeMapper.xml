@@ -19,6 +19,26 @@
 			,#{empAddrDetail} ,#{empPost} 
 			,SYSDATE ,#{empPhone} ,#{empEmail},#{empJumin})
 </insert>	
-	
+
+
+<resultMap type="emp" id="employeeResultMap">
+ <!--     컬럼명                 디비타입(대문자)       멤버필드명   -->
+	<id column="emp_num" jdbcType="VARCHAR" property="empNum"/>
+	<result column="emp_id" jdbcType="VARCHAR" property="empId"/>
+	<result column="EMP_PW" jdbcType="VARCHAR" property="empPw"/>
+	<result column="EMP_NAME" jdbcType="VARCHAR" property="empName"/>
+	<result column="EMP_ADDR" jdbcType="VARCHAR" property="empAddr"/>
+	<result column="EMP_ADDR_detail" jdbcType="VARCHAR" property="empAddrDetail"/>
+	<result column="EMP_POST" jdbcType="VARCHAR" property="empPost"/>
+	<result column="emp_enter_date" jdbcType="DATE" property="empRegiDate"/>
+	<result column="EMP_PHONE" jdbcType="VARCHAR" property="empPhone"/>
+	<result column="EMP_EMAIL" jdbcType="VARCHAR" property="empEmail"/>
+	<result column="EMP_jumin" jdbcType="VARCHAR" property="empJumin"/>
+</resultMap>	
+<select id="employeeAllSelect" resultMap="employeeResultMap">
+	select <include refid="employeeBaseColumns" />
+	  from employees 
+</select>
+
 	
 </mapper>

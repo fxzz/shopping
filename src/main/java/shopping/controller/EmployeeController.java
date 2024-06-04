@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import shopping.command.EmployeeCommand;
 import shopping.service.employees.EmployeeAutoNumService;
 import shopping.service.employees.EmployeeInsertService;
+import shopping.service.employees.EmployeeListService;
 
 @Controller
 @RequestMapping("employee")
@@ -23,8 +24,12 @@ public class EmployeeController {
 	@Autowired
 	EmployeeInsertService employeeInsertService;
 	
+	@Autowired
+	EmployeeListService employeeListService;
+	
 	@GetMapping("employeeList")
-	public String empList() {
+	public String empList(Model model) {
+		employeeListService.execute(model);
 		return "thymeleaf/employee/employeeList";
 	}
 	
